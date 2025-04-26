@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block content %}
+<h2>Search Clients</h2>
+<div class="mb-3">
+    <input type="text" class="form-control" id="searchQuery" placeholder="Search by name or ID">
+</div>
+<table class="table" id="clientTable" style="display: none;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="clientList"></tbody>
+</table>
+<div id="noResults" class="alert alert-info" style="display: none;">No clients found.</div>
+<script>
+    document.getElementById('searchQuery').addEventListener('input', function() {
+        const query = this.value.trim();
+        if (query) {
+            fetch('/search_client', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ query })
+            })
+            .then(handleApiError)
+            .then(data => {
+                const tbody = document.getElementById('clientList');
+                tbody.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(client => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${client.id}</td>
+                            <td>${client.firstName} ${client.lastName}</td>
+                            <td><a href="/view_profile/${client.id}" class="btn btn-sm btn-primary">View Profile</a></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    document.getElementById('clientTable').style.display = 'table';
+                    document.getElementById('noResults').style.display = 'none';
+                } else {
+                    document.getElementById('clientTable').style.display = 'none';
+                    document.getElementById('noResults').style.display = 'block';
+ quang                }
+            })
+            .catch(error => showAlert(error.message, true));
+        } else {
+            document.getElementById('clientTable').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
