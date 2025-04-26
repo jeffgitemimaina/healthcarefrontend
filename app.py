@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import logging
+import os
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-BACKEND_API_URL = "http://localhost:9000/api"
+# Use environment variable for backend URL
+BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://localhost:9000/api")
 
 @app.route('/')
 def index():
@@ -38,7 +40,7 @@ def enroll_client():
         data = request.get_json()
         app.logger.debug("POST /enroll_client received: %s", data)
         response = requests.post(f"{BACKEND_API_URL}/enrollments", json=data)
-        return jsonify(response.json() if response.content else {}), response.status_code
+        return jsonify(response.json() if response.content else {}, response.status_code)
     return render_template('enroll_client.html')
 
 @app.route('/search_client', methods=['GET', 'POST'])
@@ -62,4 +64,5 @@ def get_client(client_id):
     return jsonify(response.json()), response.status_code
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
