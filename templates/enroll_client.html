@@ -56,10 +56,11 @@
         document.getElementById('debug').textContent = `Enrolling Client ID: ${clientId} in Programs: ${programIds}`;
 
         fetch('/enroll_client', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ clientId, programIds })
-        })
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ clientId, programId: programIds[0] })
+})
+
         .then(response => {
             console.log('Response status:', response.status);
             document.getElementById('debug').textContent += ` | Status: ${response.status}`;

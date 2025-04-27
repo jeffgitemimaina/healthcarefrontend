@@ -15,7 +15,12 @@
 <div id="debug" class="mt-3"></div>
 <script>
     console.log("create_program.js loaded");
+
     const form = document.getElementById('createProgramForm');
+
+    // Use backend URL from meta tag or fallback
+    const BACKEND_API_URL = document.querySelector('meta[name="backend-api-url"]')?.content || "http://localhost:9000/api";
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const programName = document.getElementById('programName').value;
@@ -23,7 +28,7 @@
         console.log('Submitting program:', programName, description);
         document.getElementById('debug').textContent = `Submitting: ${programName}`;
 
-        fetch('/create_program', {
+        fetch(`${BACKEND_API_URL}/programs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: programName, description: description })
