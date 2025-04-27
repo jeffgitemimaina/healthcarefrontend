@@ -18,8 +18,11 @@
 <script>
     console.log("enroll_client.js loaded");
 
+    // Use backend URL from meta tag or environment
+    const BACKEND_API_URL = document.querySelector('meta[name="backend-api-url"]')?.content || "http://localhost:9000/api";
+
     // Fetch programs
-    fetch('http://localhost:9000/api/programs')
+    fetch(`${BACKEND_API_URL}/programs`)
         .then(response => {
             console.log('Programs fetch status:', response.status);
             return handleApiError(response);
