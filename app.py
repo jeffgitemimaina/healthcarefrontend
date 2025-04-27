@@ -7,7 +7,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # Use environment variable for backend URL
-BACKEND_API_URL = os.getenv("BACKEND_API_URL", "http://localhost:9000/api")
+BACKEND_API_URL = os.getenv("BACKEND_API_URL", "https://healthcare-api-backend.onrender.com/api")
 
 @app.route('/')
 def index():
