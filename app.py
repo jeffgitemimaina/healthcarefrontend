@@ -23,7 +23,7 @@ def create_program():
         app.logger.debug("Backend response: %s", response.status_code)
         return jsonify(response.json()), response.status_code
     app.logger.debug("Serving create_program.html")
-    return render_template('create_program.html')
+    return render_template('create_program.html', active_page='create_program')
 
 @app.route('/register_client', methods=['GET', 'POST'])
 def register_client():
@@ -32,7 +32,7 @@ def register_client():
         app.logger.debug("POST /register_client received: %s", data)
         response = requests.post(f"{BACKEND_API_URL}/clients", json=data)
         return jsonify(response.json()), response.status_code
-    return render_template('register_client.html')
+    return render_template('register_client.html',active_page='register_client')
 
 @app.route('/enroll_client', methods=['GET', 'POST'])
 def enroll_client():
@@ -41,7 +41,7 @@ def enroll_client():
         app.logger.debug("POST /enroll_client received: %s", data)
         response = requests.post(f"{BACKEND_API_URL}/enrollments", json=data)
         return jsonify(response.json() if response.content else {}, response.status_code)
-    return render_template('enroll_client.html')
+    return render_template('enroll_client.html',active_page='enroll_client')
 
 @app.route('/search_client', methods=['GET', 'POST'])
 def search_client():
@@ -50,7 +50,7 @@ def search_client():
         app.logger.debug("POST /search_client received: %s", data)
         response = requests.get(f"{BACKEND_API_URL}/clients/search", params=data)
         return jsonify(response.json()), response.status_code
-    return render_template('search_client.html')
+    return render_template('search_client.html',active_page='search_client')
 
 @app.route('/view_profile/<client_id>')
 def view_profile(client_id):
